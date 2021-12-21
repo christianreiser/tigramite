@@ -4,3 +4,25 @@
 
 # Python byte code
 *.pyc
+
+# chr
+.idea
+*.json
+test.py
+*.csv
+takeout*
+venv/
+*.zip
+*.png
+runs/*
+__pycache__/
+0_data_raw/
+build/
+chris_exploration/causeme_python_example/.ipynb_checkpoints/
+chris_exploration/causeme_python_example/experiments/
+chris_exploration/causeme_python_example/results/
+chris_exploration/data/
+chris_exploration/originalcauseme_python_example/
+dist/
+tigramite.egg-info/
+tigramite/tigramite_cython_code.cpython-39-x86_64-linux-gnu.so

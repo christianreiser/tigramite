@@ -2,6 +2,8 @@
 
 ## use `%matplotlib notebook` for interactive figures
 # plt.style.use('ggplot')
+import datetime
+
 import numpy as np
 import pandas as pd
 
@@ -47,3 +49,41 @@ def remove_nan_seq_from_top_and_bot(df):
     return df
 
 
+def non_contemporary_tie_series_generation(df1):
+    """
+    so far works only when var 1 happens before far 2. E.G. sleep, exercise
+
+    Parameters
+    ----------
+    df1[Date, var happening first, var happening second]: dataframe with format: one row per day
+
+    Returns
+    -------
+    dataframe with format: 2 rows per day
+    """
+    # insert blanc row after every row
+    df1.index = range(1, 2 * len(df1) + 1, 2)
+    df = df1.reindex(index=range(2 * len(df1)))
+
+    # modify df:
+    # 1. add morning date time
+    # 2. write heart points
+    # 3. write sleep eff
+    # 4. write evening date time
+    for i, row in df.iterrows():
+        if i % 2 == 0:
+            if i != 0:
+                df.loc[i, df.columns[0]] = df.loc[i - 1, df.columns[0]] + datetime.timedelta(hours=7, minutes=0)
+                df.loc[i, df.columns[2]] = df.loc[i - 1, df.columns[2]]
+            if i < len(df):
+                df.loc[i, df.columns[1]] = df.loc[i + 1, df.columns[1]]
+
+        else:  # i % 2 == 1:
+            # df.loc[i, 'SleepEfficiency'] = df.loc[i+1, 'SleepEfficiency']
+            df.loc[i, df.columns[0]] = df.loc[i, df.columns[0]] + datetime.timedelta(hours=23, minutes=0)
+
+        # df.loc[i, 'HeartPoints'] = 1.0#df.loc[i-1, 'HeartPoints']
+        # df.loc[i, 'SleepEfficiency'] = 1.0#df.loc[i+1, 'SleepEfficiency']
+
+    df = df.iloc[1:]  # drop first row as it's missing data
+    return df
