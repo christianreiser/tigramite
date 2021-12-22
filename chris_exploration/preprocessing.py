@@ -44,7 +44,10 @@ def remove_nan_seq_from_top_and_bot(df):
                 break
 
         # print nans in middle
-        print('remaining Nans: ',df.loc[pd.isna(df[column]), :].index.values)
+
+        remaining_nans = df.loc[pd.isna(df[column]), :].index.values
+        if len(remaining_nans) > 0:
+            print('remaining Nans: ',remaining_nans)
 
     return df
 
